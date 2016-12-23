@@ -485,15 +485,27 @@ export default class ParseQuery {
 
   /** Query Conditions **/
 
-  /**
-   * Adds a constraint to the query that requires a particular key's value to
-   * be equal to the provided value.
-   * @method equalTo
-   * @param {String} key The key to check.
-   * @param value The value that the Parse.Object must contain.
-   * @return {Parse.Query} Returns the query, so you can chain this call.
-   */
-  equalTo(key: string, value: mixed): ParseQuery {
+	 /**
+    * @method where
+    * @param {Object} Object representing 
+    * @return {Parse.Query} Returns the query, so you can chain this call.
+    */
+  where(obj): ParseQuery {
+		Object.keys(obj).map((key) => {
+			this._where[key] = encode(obj[key], false, true);
+		});
+    return this;
+  }
+	
+	/**
+	 * Adds a constraint to the query that requires a particular key's value to
+	 * be equal to the provided value.
+	 * @method equalTo
+	 * @param {String} key The key to check.
+	 * @param value The value that the Parse.Object must contain.
+	 * @return {Parse.Query} Returns the query, so you can chain this call.
+	 */
+  equalTo(obj: object): ParseQuery {
     if (typeof value === 'undefined') {
       return this.doesNotExist(key);
     }
